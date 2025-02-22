@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = async (req, res) => {
     const CONTRACT_ADDRESS = "0xd677944Df705924AF369d2FCcf4A989f343DbCDf";
-    const API_KEY = process.env.API_KEY;
+    const API_KEY = STQ7U18EQSM66P5V5QRWWNKA9AGH5R6HYN;
     
     try {
         const response = await axios.get(`https://api.cronoscan.com/api`, {
