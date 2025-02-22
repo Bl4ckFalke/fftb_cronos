@@ -1,24 +1,32 @@
 const axios = require("axios");
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
+    // 🔹 Token-Konfiguration
     const CONTRACT_ADDRESS = "0xd677944Df705924AF369d2FCcf4A989f343DbCDf";
-    const API_KEY = STQ7U18EQSM66P5V5QRWWNKA9AGH5R6HYN;
-    
+    const DECIMALS = 18; // Falls dein Token andere Dezimalstellen hat, hier ändern
+    const API_KEY = "STQ7U18EQSM66P5V5QRWWNKA9AGH5R6HYN"; // Falls kein API-Key vorhanden, leer lassen ""
+
     try {
-        const response = await axios.get(`https://api.cronoscan.com/api`, {
-            params: {
-                module: "stats",
-                action: "tokensupply",
-                contractaddress: CONTRACT_ADDRESS,
-                apikey: API_KEY
-            }
-        });
+        // 🔹 Cronoscan API-URL
+        const apiUrl = https://api.cronoscan.com/api?module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${API_KEY};
 
-        const rawSupply = response.data.result;
-        const circulatingSupply = rawSupply / Math.pow(10, 18); // Falls dein Token 18 Dezimalstellen hat
+        // 🔹 Abrufen des Supplies
+        const response = await axios.get(apiUrl);
 
-        res.json({ circulating_supply: circulatingSupply });
+        // 🔹 Prüfen, ob die Antwort von Cronoscan gültig ist
+        if (response.data.status !== "1" || !response.data.result) {
+            return res.status(500).json({ error: "Fehler beim Abrufen des Token-Supply" });
+        }
+
+        // 🔹 Token-Supply in eine lesbare Zahl umrechnen
+        const rawSupply = parseFloat(response.data.result);
+        const circulatingSupply = rawSupply / Math.pow(10, DECIMALS);
+
+        // 🔹 API-Response für CoinGecko
+        res.status(200).json({ circulating_supply: circulatingSupply });
+
     } catch (error) {
-        res.status(500).json({ error: "Fehler beim Abrufen der Daten" });
+        console.error("❌ Fehler beim Abrufen des Supplies:", error.message);
+        res.status(500).json({ error: "Server-Fehler beim Abrufen des Supplies" });
     }
-};
+}
