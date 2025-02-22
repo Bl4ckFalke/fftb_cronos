@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     // 🔹 Token-Konfiguration
     const CONTRACT_ADDRESS = "0xd677944Df705924AF369d2FCcf4A989f343DbCDf";
     const DECIMALS = 18; // Falls dein Token andere Dezimalstellen hat, hier ändern
-    const API_KEY = "DEIN_API_KEY"; // Falls kein API-Key vorhanden, leer lassen ""
+    const API_KEY = "STQ7U18EQSM66P5V5QRWWNKA9AGH5R6HYN"; // Falls kein API-Key vorhanden, leer lassen ""
 
     try {
         // 🔹 Cronoscan API-URL
